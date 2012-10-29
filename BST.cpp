@@ -25,7 +25,22 @@ bool BST<T>::find(T v) {
 
 template <typename T>
 Node<T>* BST<T>::findNode(T v, Node<T>* parent){
-	return root;
+	assert(parent != 0);
+
+	if(parent->getValue() == v){
+		return parent;
+	}
+	else if(v <= parent->getValue()){
+		cout << "value is on left" << endl;
+		findNode(v, parent->getLeftChild());
+	}
+	else if(v > parent->getValue()){
+		cout << "value is on right" << endl;
+		findNode(v, parent->getRightChild());
+	}
+	else{
+		return 0;
+	}
 }
 
 template <typename T>
@@ -51,10 +66,12 @@ void BST<T>::remove(T v) {
 	//the node has two children
 	assert(root != 0);
   	Node<T>* temp = new Node<T>(v);
-	Node<T>** curr = &root;
+	//Node<T>** curr = &root;
+	
+	Node<T>* thisValue = findNode(v, root);
 	//base case for remove
 	//first check to see if the root is the node to remove
-  	if((*curr)->getValue() == v){
+  	if(thisValue->getValue() == v){
 		//remove this node
 		//swap with in-line successor
 		cout << "value match" << endl;
