@@ -1,5 +1,5 @@
 CPP = g++
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra
 
 
 ttest: tree_test.cpp BST.o Node.o

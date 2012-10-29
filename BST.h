@@ -6,18 +6,21 @@
 
 template <typename T>
 class BST {
- private:
-  Node<T>* root;
-  void traversalPrint(Node<T>* root);
+ 	private:
+  		Node<T>* root;
+  		void traversalPrint(Node<T>* root);
 
- public:
-  BST<T>();
-  ~BST<T>();
+		//private helper methods
+		Node<T>* findNode(T v, Node<T>* parent);
 
-  bool find(T v);
-  void remove(T v);
-  void insert(T v);
-  void print();
+ 	public:
+  		BST<T>();
+  		~BST<T>();
+
+  		bool find(T v);
+  		void remove(T v);
+ 	 	void insert(T v);
+  		void print();
 };
 
 
