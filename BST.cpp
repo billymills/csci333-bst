@@ -15,7 +15,6 @@ BST<T>::~BST() {
   
 }
 
-
 template <typename T>
 bool BST<T>::find(T v) {
   Node<T>* temp = new Node<T>(v);
@@ -24,19 +23,19 @@ bool BST<T>::find(T v) {
 }
 
 template <typename T>
-Node<T>* BST<T>::findNode(T v, Node<T>* parent){
-	assert(parent != 0);
+Node<T>* BST<T>::findNode(T v, Node<T>* node){
+	assert(node != 0);
 
-	if(parent->getValue() == v){
-		return parent;
+	if(node->getValue() == v){
+		return node;
 	}
-	else if(v <= parent->getValue()){
-		cout << "value is on left" << endl;
-		findNode(v, parent->getLeftChild());
+	else if(v <= node->getValue()){
+		cout << "looking on left" << endl;
+		findNode(v, node->getLeftChild());
 	}
-	else if(v > parent->getValue()){
-		cout << "value is on right" << endl;
-		findNode(v, parent->getRightChild());
+	else if(v > node->getValue()){
+		cout << "looking on right" << endl;
+		findNode(v, node->getRightChild());
 	}
 	else{
 		return 0;
@@ -60,13 +59,9 @@ void BST<T>::insert(T v) {
 
 template <typename T>
 void BST<T>::remove(T v) {
-	//three cases
-	//the node has no children its a leaf
-	//the node has one child
-	//the node has two children
 	assert(root != 0);
   	Node<T>* temp = new Node<T>(v);
-	//Node<T>** curr = &root;
+	Node<T>** curr = &root;
 	
 	Node<T>* thisValue = findNode(v, root);
 	//base case for remove
@@ -78,14 +73,10 @@ void BST<T>::remove(T v) {
 	}
 	//else if root is larger than value and getLeftchild not equal to zero
 	//recursively call remove
-	//else if(*curr)->getValue() > v){
-		
+	//else if(*curr)->getValue() > v){		
 	//}
- 
 	//else if root is smaller check right subtree
-	
-
-	root = temp;
+	//root = temp;
 }
 
 template <typename T>
