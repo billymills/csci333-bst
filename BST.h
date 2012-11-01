@@ -11,7 +11,8 @@ class BST {
   		void traversalPrint(Node<T>* root);
 
 		//private helper methods
-		Node<T>* findNode(T v, Node<T>* parent);
+		Node<T>* findNode(T v, Node<T>* node);
+		Node<T>* findParent(T v, Node<T>* node);
 
  	public:
   		BST<T>();

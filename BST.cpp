@@ -24,16 +24,16 @@ bool BST<T>::find(T v) {
 
 template <typename T>
 Node<T>* BST<T>::findNode(T v, Node<T>* node){
-	cout << "in find" << endl;
+	//cout << "in find" << endl;
 	if(node->getValue() == v){
 		return node;
 	}
 	else if(v <= node->getValue() && node->getLeftChild() != 0){
-		cout << "looking on left" << endl;
+		//cout << "looking on left" << endl;
 		findNode(v, node->getLeftChild());
 	}
 	else if(v > node->getValue() && node->getRightChild() != 0){
-		cout << "looking on right" << endl;
+		//cout << "looking on right" << endl;
 		findNode(v, node->getRightChild());
 	}
 	else{
@@ -42,10 +42,28 @@ Node<T>* BST<T>::findNode(T v, Node<T>* node){
 }
 
 template <typename T>
+Node<T>* BST<T>::findParent(T v, Node<T>* node){
+	//cout << "in find parent" << endl;
+	if(node->getRightChild()->getValue() == v || node->getLeftChild()->getValue() == v){
+		return node;
+	}
+	else if(v <= node->getValue() && node->getLeftChild() != 0){
+		//cout << "looking on left" << endl;
+		findNode(v, node->getLeftChild());
+	}
+	else if(v > node->getValue() && node->getRightChild() != 0){
+		//cout << "looking on right" << endl;
+		findNode(v, node->getRightChild());
+	}
+	else{
+		cout << "value not in list" << endl;
+	}
+}
+template <typename T>
 void BST<T>::insert(T v) {
   Node<T>* temp = new Node<T>(v);
   Node<T>** curr = &root;
-	cout << "in insert" << endl;
+	//cout << "in insert" << endl;
   while (*curr != 0) {
     if (v < (*curr)->getValue()) {
       curr = &((*curr)->getLeftChild());
@@ -63,8 +81,11 @@ void BST<T>::remove(T v) {
 	Node<T>** curr = &root;
 	//ntbr is node to be removed
 	cout << "looking for value:  " << v << endl;
+	Node<T>* parent = findParent(v, *curr);
 	Node<T>* ntbr = findNode(v, *curr);
 	Node<T>* iop;	
+	
+	cout << "parent is: " << parent->getValue();
 
 	//only considering in order predecessor approach
 	//base case for remove
@@ -73,14 +94,18 @@ void BST<T>::remove(T v) {
 		cout << "value match" << endl;
 		if(ntbr->getLeftChild() != 0) {
 			cout << "there is a left child" << endl;
-			ntbr = ntbr->getLeftChild();
-			cout << "moved to left child" << endl;
-		
+			iop = ntbr->getLeftChild();
+			cout << "iop is: " << iop->getValue() << endl;
+					
 			if(ntbr->getRightChild() == 0) {
-				cout << "there is no right child found iop" << endl;
+				cout << "there is no right child" << endl;
 				//assign iop
-				iop = ntbr;
+				//iop = ntbr;
 				cout << "iop is: " << iop->getValue() << endl;
+				if(ntbr->getRightChild() != 0) {
+					iop->setRightChild(*ntbr->getRightChild());
+					
+				}
 			}
 			else {
 				while(ntbr->getRightChild() != 0) {
@@ -90,6 +115,15 @@ void BST<T>::remove(T v) {
 				cout << "iop is : " << iop->getValue() << endl;
 			}
 		}
+		//else we need to get the right child
+		else if(ntbr->getRightChild() != 0) {
+			iop = ntbr->getRightChild();
+			cout << "iop is: " << iop->getValue() << endl;
+		}
+		else if(ntbr->getRightChild() == 0) {
+			//delete ntbr
+			//set parent nodes right child to zero
+		}	
 	}
 
 }
