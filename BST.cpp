@@ -91,11 +91,11 @@ template <typename T>
 void BST<T>::remove(T v) {
 	cout << "in remove" << endl;
 	assert(root != 0);
-	Node<T>** curr = &root;
+	//Node<T>** curr = &root;
 	//ntbr is node to be removed
 	cout << "looking for value:  " << v << endl;
-	Node<T>* parent = findParent(v, *curr);
-	Node<T>* ntbr = findNode(v, *curr);
+	Node<T>* parent = findParent(v, root);
+	Node<T>* ntbr = findNode(v, root);
 	Node<T>* iop;	
 	
 	cout << "parent is: " << parent->getValue();
@@ -112,12 +112,14 @@ void BST<T>::remove(T v) {
 					
 			if(ntbr->getRightChild() == 0) {
 				cout << "there is no right child" << endl;
-				//assign iop
-				//iop = ntbr;
+				//if there is no right child just repoint parent
+				parent->setLeftChild(*ntbr->getLeftChild());
+				delete ntbr;
 				cout << "iop is: " << iop->getValue() << endl;
 				if(ntbr->getRightChild() != 0) {
 					iop->setRightChild(*ntbr->getRightChild());
-					
+					parent->setLeftChild(*ntbr->getLeftChild());
+					delete ntbr;					
 				}
 			}
 			else {
