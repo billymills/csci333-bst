@@ -43,8 +43,20 @@ Node<T>* BST<T>::findNode(T v, Node<T>* node){
 
 template <typename T>
 Node<T>* BST<T>::findParent(T v, Node<T>* node){
+	Node<T>* temp = 0;
+	while((node != 0) && (node->getValue() != v)){
+		temp = node;
+		if (node->getValue() > v){
+			node = node->getLeftChild();
+		}
+		else {
+			node = node->getRightChild();
+		}
+	}
+	return temp;
+/*
 	//cout << "in find parent" << endl;
-	if(node->getRightChild()->getValue() == v || node->getLeftChild()->getValue() == v){
+	if(node->getLeftChild()->getValue() == v || node->getRightChild()->getValue() == v){
 		return node;
 	}
 	else if(v <= node->getValue() && node->getLeftChild() != 0){
@@ -58,6 +70,7 @@ Node<T>* BST<T>::findParent(T v, Node<T>* node){
 	else{
 		cout << "value not in list" << endl;
 	}
+*/
 }
 template <typename T>
 void BST<T>::insert(T v) {
