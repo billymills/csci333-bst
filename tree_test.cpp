@@ -7,6 +7,7 @@ int main() {
   	bst->insert(20);
   	bst->insert(5);
 	bst->insert(2);
+	bst->insert(6);
   	//bst->insert(25);
   	//bst->insert(30);
  	//bst->insert(5);

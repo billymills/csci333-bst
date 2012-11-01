@@ -105,36 +105,34 @@ void BST<T>::remove(T v) {
 	//first check to see if the root is the node to remove
   	if(ntbr->getValue() == v){
 		cout << "value match" << endl;
+		//find iop first
 		if(ntbr->getLeftChild() != 0) {
 			cout << "there is a left child" << endl;
 			iop = ntbr->getLeftChild();
+			while(iop->getRightChild() != 0){
+				iop = iop->getRightChild();
+			}
+
 			cout << "iop is: " << iop->getValue() << endl;
-					
+								
 			if(ntbr->getRightChild() == 0) {
 				cout << "there is no right child" << endl;
-				//if there is no right child just repoint parent
 				parent->setLeftChild(*ntbr->getLeftChild());
 				delete ntbr;
 				cout << "iop is: " << iop->getValue() << endl;
-				if(ntbr->getRightChild() != 0) {
-					iop->setRightChild(*ntbr->getRightChild());
-					parent->setLeftChild(*ntbr->getLeftChild());
-					delete ntbr;					
-				}
 			}
+			//else ntbr has a right child
 			else {
-				while(ntbr->getRightChild() != 0) {
-					ntbr = ntbr->getRightChild();
-				}
-				iop = ntbr;
-				cout << "iop is : " << iop->getValue() << endl;
+				iop->setRightChild(*ntbr->getRightChild());
+				parent->setLeftChild(*ntbr->getLeftChild());
+				delete ntbr;
 			}
 		}
 		//else we need to get the right child
-		else if(ntbr->getRightChild() != 0) {
-			iop = ntbr->getRightChild();
-			cout << "iop is: " << iop->getValue() << endl;
-		}
+		//else if(ntbr->getRightChild() != 0) {
+		//	iop = ntbr->getRightChild();
+		//	cout << "iop is: " << iop->getValue() << endl;
+		//}
 		else if(ntbr->getRightChild() == 0) {
 			//delete ntbr
 			//set parent nodes right child to zero
