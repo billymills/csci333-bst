@@ -106,7 +106,17 @@ void BST<T>::remove(T v) {
   	if(ntbr->getValue() == v){
 		cout << "value match" << endl;
 		//find iop first
-		if(ntbr->getLeftChild() != 0) {
+		if(ntbr->getLeftChild() == 0 && ntbr->getRightChild() == 0){
+			if(parent->getLeftChild()->getValue() == v){
+				parent->setLeftChild(*ntbr->getLeftChild());
+			}
+			else {
+				parent->setRightChild(*ntbr->getRightChild());
+			}
+			delete ntbr;
+		}
+			
+		else if(ntbr->getLeftChild() != 0) {
 			cout << "there is a left child" << endl;
 			iop = ntbr->getLeftChild();
 			while(iop->getRightChild() != 0){
