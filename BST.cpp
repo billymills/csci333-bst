@@ -89,22 +89,51 @@ void BST<T>::insert(T v) {
 
 template <typename T>
 void BST<T>::remove(T v) {
-	cout << "in remove" << endl;
 	assert(root != 0);
-	//Node<T>** curr = &root;
-	//ntbr is node to be removed
 	cout << "looking for value:  " << v << endl;
+
 	Node<T>* parent = findParent(v, root);
 	Node<T>* ntbr = findNode(v, root);
 	Node<T>* iop;	
 	
-	cout << "parent is: " << parent->getValue();
+	//handle root
+	Node<T>* tempRoot = root;
+	if(tempRoot->getValue() == v){
+		//case 1 no children
+		if(tempRoot->getLeftChild() == 0 && tempRoot->getRightChild() == 0){
+			root = 0;	
+		}
+		
+		//case 2 one child
+		if(tempRoot->getLeftChild() != 0 && tempRoot->getRightChild() == 0){
+			root = tempRoot->getLeftChild();
+		}
+		else {
+			root = tempRoot->getRightChild();
+		}
+
+		//case 3 two children
+		if(tempRoot->getLeftChild() != 0 && tempRoot->getRightChild() != 0){
+			iop = tempRoot->getLeftChild();
+			while(iop->getRightChild() != 0){
+				iop = iop->getRightChild();
+			}
+			iop->setRightChild(*tempRoot->getRightChild());
+			root = tempRoot->getLeftChild();
+		}
+		delete tempRoot;
+		return;
+	}
+
+	
+	cout << "ntbr is: " << ntbr->getValue() << endl;
+	cout << "parent is: " << parent->getValue() << endl;
 
 	//only considering in order predecessor approach
 	//base case for remove
 	//first check to see if the root is the node to remove
   	if(ntbr->getValue() == v){
-		cout << "value match" << endl;
+		//cout << "value match" << endl;
 		//find iop firsti
 
 		//case 1 no children
@@ -121,7 +150,7 @@ void BST<T>::remove(T v) {
 		//case 2 just one child
 		if(ntbr->getLeftChild() != 0 && ntbr->getRightChild() == 0) {
 			cout << "there is only a left child" << endl;
-			iop = ntbr->getLeftChild();
+			//iop = ntbr->getLeftChild();
 			//while(iop->getRightChild() != 0){
 			//	iop = iop->getRightChild();
 			//}
@@ -134,16 +163,36 @@ void BST<T>::remove(T v) {
 			delete ntbr;
 		}
 
-		/*
+		
 		if(ntbr->getLeftChild() == 0 && ntbr->getRightChild() != 0){
 			if(ntbr->getValue() > parent->getValue()){
-				parent->setRightChild(*ntbr->getRightChild));
+				parent->setRightChild(*ntbr->getRightChild());
 			}
 			else {
-				parent->setLeftChild(*ntbr->getRightChild));
+				parent->setLeftChild(*ntbr->getRightChild());
 			}
 			delete ntbr;
 		}
+
+		//case 3 two children
+		if(ntbr->getLeftChild() != 0 && ntbr->getRightChild() != 0){
+			//find iop
+			iop = ntbr->getLeftChild();
+			while(iop->getRightChild() != 0){
+				iop = iop->getRightChild();
+			}
+			if(ntbr->getValue() > parent->getValue()){
+				iop->setRightChild(*ntbr->getRightChild());
+				parent->setRightChild(*ntbr->getLeftChild());
+			}
+			else {
+				iop->setRightChild(*ntbr->getRightChild());
+				parent->setLeftChild(*ntbr->getLeftChild());
+			}
+			delete ntbr;
+		}
+	
+		/*
 
 			cout << "iop is: " << iop->getValue() << endl;
 								
