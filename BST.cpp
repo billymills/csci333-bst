@@ -105,7 +105,9 @@ void BST<T>::remove(T v) {
 	//first check to see if the root is the node to remove
   	if(ntbr->getValue() == v){
 		cout << "value match" << endl;
-		//find iop first
+		//find iop firsti
+
+		//case 1 no children
 		if(ntbr->getLeftChild() == 0 && ntbr->getRightChild() == 0){
 			if(parent->getLeftChild()->getValue() == v){
 				parent->setLeftChild(*ntbr->getLeftChild());
@@ -116,12 +118,32 @@ void BST<T>::remove(T v) {
 			delete ntbr;
 		}
 			
-		else if(ntbr->getLeftChild() != 0) {
-			cout << "there is a left child" << endl;
+		//case 2 just one child
+		if(ntbr->getLeftChild() != 0 && ntbr->getRightChild() == 0) {
+			cout << "there is only a left child" << endl;
 			iop = ntbr->getLeftChild();
-			while(iop->getRightChild() != 0){
-				iop = iop->getRightChild();
+			//while(iop->getRightChild() != 0){
+			//	iop = iop->getRightChild();
+			//}
+			if(ntbr->getValue() > parent->getValue()){
+				parent->setRightChild(*ntbr->getLeftChild()); 
 			}
+			else {
+				parent->setLeftChild(*ntbr->getLeftChild());
+			}
+			delete ntbr;
+		}
+
+		/*
+		if(ntbr->getLeftChild() == 0 && ntbr->getRightChild() != 0){
+			if(ntbr->getValue() > parent->getValue()){
+				parent->setRightChild(*ntbr->getRightChild));
+			}
+			else {
+				parent->setLeftChild(*ntbr->getRightChild));
+			}
+			delete ntbr;
+		}
 
 			cout << "iop is: " << iop->getValue() << endl;
 								
@@ -129,7 +151,6 @@ void BST<T>::remove(T v) {
 				cout << "there is no right child" << endl;
 				parent->setLeftChild(*ntbr->getLeftChild());
 				delete ntbr;
-				cout << "iop is: " << iop->getValue() << endl;
 			}
 			//else ntbr has a right child
 			else {
@@ -138,17 +159,16 @@ void BST<T>::remove(T v) {
 				delete ntbr;
 			}
 		}
-		//else we need to get the right child
-		//else if(ntbr->getRightChild() != 0) {
-		//	iop = ntbr->getRightChild();
-		//	cout << "iop is: " << iop->getValue() << endl;
-		//}
-		else if(ntbr->getRightChild() == 0) {
-			//delete ntbr
-			//set parent nodes right child to zero
-		}	
+		else if(ntbr->getRightChild() != 0) {
+			cout << "there is no left, but a right child" << endl;
+			iop = ntbr->getRightChild();
+			while(iop->getLeftChild() != 0){
+				iop = iop->getLeftChild();
+			}
+			iop->setRightChild(*ntbr->getRightChild());
+			parent->setRightChild()(
+		}*/	
 	}
-
 }
 
 template <typename T>
