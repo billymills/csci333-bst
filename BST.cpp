@@ -1,9 +1,11 @@
 #include "BST.h"
 #include <iostream>
 #include <assert.h>
+#include <vector>
 
 using std::cout;
 using std::endl;
+using std::vector;
 
 template <typename T>
 BST<T>::BST() {
@@ -192,37 +194,85 @@ void BST<T>::remove(T v) {
 			delete ntbr;
 		}
 	
-		/*
+	}
+}
 
-			cout << "iop is: " << iop->getValue() << endl;
-								
-			if(ntbr->getRightChild() == 0) {
-				cout << "there is no right child" << endl;
-				parent->setLeftChild(*ntbr->getLeftChild());
-				delete ntbr;
+template <typename T>
+void BST<T>::levelSearch() {
+	bool isEmptyLevel = false;
+	int numLevels=0;
+
+	vector<vector<Node<T>* > > levelVector;
+	vector<Node<T>* > currLevel(1, root);
+
+
+	if(currLevel[0] == 0) {
+		isEmptyLevel = true;
+	}
+	else {
+		levelVector.push_back(currLevel);
+		numLevels++;
+	}
+
+	
+	
+	while (isEmptyLevel == false) {
+
+
+		currLevel.resize(2*levelVector[numLevels-1].size());
+		for(unsigned int i = 0;i < levelVector[numLevels-1].size(); i++){
+
+		
+			if(levelVector[numLevels-1][i] != 0) {
+				currLevel[2*i] = levelVector[numLevels-1][i]->getLeftChild();
+				currLevel[2*i+1] = levelVector[numLevels-1][i]->getRightChild();
 			}
-			//else ntbr has a right child
 			else {
-				iop->setRightChild(*ntbr->getRightChild());
-				parent->setLeftChild(*ntbr->getLeftChild());
-				delete ntbr;
+				currLevel[2*i]=0;
+				currLevel[2*i+1]=0;
 			}
 		}
-		else if(ntbr->getRightChild() != 0) {
-			cout << "there is no left, but a right child" << endl;
-			iop = ntbr->getRightChild();
-			while(iop->getLeftChild() != 0){
-				iop = iop->getLeftChild();
+		//cout << "current level size is: " << currLevel.size() << endl;
+		for (unsigned int i = 0;i < currLevel.size();i++) {
+			if(currLevel[i] != 0){
+				isEmptyLevel = false;
+				break;
 			}
-			iop->setRightChild(*ntbr->getRightChild());
-			parent->setRightChild()(
-		}*/	
+		isEmptyLevel = true;
+			
+		//cout << "out of if" << endl;
+		}
+	
+		if(isEmptyLevel == false) {
+			//cout << "if level is not emtpy push onto vector" << endl;
+			levelVector.push_back(currLevel);
+			numLevels++;
+		}
 	}
+
+	for(unsigned int i = 0;i < levelVector.size();++i) {
+		//cout << "in outer for to print" << endl;
+		for(unsigned int j = 0;j < levelVector[i].size();++j){
+			//cout << "in inner for to print" << endl;
+			if(levelVector[i][j] != 0){
+				cout << levelVector[i][j]->getValue() << " ";
+			}
+			else {
+				cout << "x ";
+			}
+		}
+		cout << endl;
+	}	
 }
 
 template <typename T>
 void BST<T>::print() {
   traversalPrint(root);
+}
+
+template <typename T>
+void BST<T>::levelPrint() {
+	levelSearch();
 }
 
 template <typename T>

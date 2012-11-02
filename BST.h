@@ -13,6 +13,7 @@ class BST {
 		//private helper methods
 		Node<T>* findNode(T v, Node<T>* node);
 		Node<T>* findParent(T v, Node<T>* node);
+		void levelSearch();
 
  	public:
   		BST<T>();
@@ -22,6 +23,7 @@ class BST {
   		void remove(T v);
  	 	void insert(T v);
   		void print();
+		void levelPrint();
 };
 
 
