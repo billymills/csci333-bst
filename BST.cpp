@@ -101,8 +101,6 @@ void BST<T>::remove(T v) {
 			}
 			iop->setRightChild(*tempRoot->getRightChild());
 			root = tempRoot->getLeftChild();
-			cout << "root is: " << root->getValue() << endl;
-			cout << "iop rc is: " << iop->getRightChild()->getValue() << endl;
 		}
 		
 		delete tempRoot;
@@ -211,22 +209,48 @@ void BST<T>::levelSearch() {
 		}
 	}
 
+	//start of print code
+	int width=4;
+	vector<int> vStart(levelVector.size());
+	vector<int> vBetween(levelVector.size());
+	vStart[levelVector.size()-1]=0;
+	vBetween[levelVector.size()-1]=width;
+	for(unsigned int i=0;i<levelVector.size()-1;++i){
+		vStart[levelVector.size()-i-2]=vStart[levelVector.size()-i-1]
+			+vBetween[levelVector.size()-i-1]/2;
+		vBetween[levelVector.size()-i-2]=2*vBetween[levelVector.size()-i-1];
+	}
+
 	for(unsigned int i = 0;i < levelVector.size();++i) {
 		for(unsigned int j = 0;j < levelVector[i].size();++j){
+			if(j==0){
+				printSpaces(vStart[i]);
+			}	
+			else {
+				printSpaces(vBetween[i]-1);
+			}
 			if(levelVector[i][j] != 0){
 				cout << levelVector[i][j]->getValue() << " ";
 			}
 			else {
-				cout << "x ";
+				cout << "x";
 			}
 		}
-		cout << endl;
-	}	
+		cout << endl << endl;
+	}
+	cout << endl << endl;	
 }
 
 template <typename T>
 void BST<T>::print() {
   traversalPrint(root);
+}
+
+template <typename T>
+void BST<T>::printSpaces(int n) {
+	for(int i=0;i<n;++i) {
+		cout << " ";
+	}
 }
 
 template <typename T>

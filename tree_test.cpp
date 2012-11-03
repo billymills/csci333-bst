@@ -22,6 +22,8 @@ int main() {
 	bst->insert(20);
 	bst->insert(28);
 	bst->insert(30);
+	bst->insert(22);
+	bst->insert(26);
 
 	cout << "in order traversal print:" << endl;
 	bst->print();
