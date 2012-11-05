@@ -57,4 +57,5 @@ int main() {
 	bst->levelPrint();
 	cout << " " << endl;
 
+	delete bst;
 }

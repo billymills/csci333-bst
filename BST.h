@@ -15,6 +15,7 @@ class BST {
 		Node<T>* findParent(T v, Node<T>* node);
 		void levelSearch();
 		void printSpaces(int n);
+		void postOrderDelete(Node<T>* t);
 
  	public:
   		BST<T>();

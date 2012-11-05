@@ -14,7 +14,16 @@ BST<T>::BST() {
 
 template <typename T>
 BST<T>::~BST() {
-  
+	postOrderDelete(root);  
+}
+
+template <typename T>
+void BST<T>::postOrderDelete(Node<T>* t){
+	if(t != 0){
+		postOrderDelete(t->getLeftChild());
+		postOrderDelete(t->getRightChild());
+		delete t;
+	}
 }
 
 template <typename T>
