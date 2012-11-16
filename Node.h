@@ -11,10 +11,10 @@ class Node {
  public:
   Node<T>(T v);
   T getValue();
-  Node<T>*&  getLeftChild();
-  void setLeftChild(Node<T>& n);
-  Node<T>*&  getRightChild();
-  void setRightChild(Node<T>& n);
+  Node<T>* getLeftChild();
+  void setLeftChild(Node<T>* n);
+  Node<T>* getRightChild();
+  void setRightChild(Node<T>* n);
 };
 
 #endif

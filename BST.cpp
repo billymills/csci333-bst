@@ -51,14 +51,17 @@ Node<T>* BST<T>::findNode(T v, Node<T>* node){
 
 template <typename T>
 Node<T>* BST<T>::findParent(T v, Node<T>* node){
-	Node<T>* temp = 0;
-	while((node != 0) && (node->getValue() != v)){
-		temp = node;
-		if (node->getValue() > v){
-			node = node->getLeftChild();
-		}
+	Node<T>* temp = node;
+	while (temp != 0){
+		if ((temp->getRightChild() != 0 && temp->getRightChild()->getValue() == v)
+			|| (temp->getLeftChild() != 0 && temp->getLeftChild()->getValue() == v)){
+			return temp;
+		}	
+		if (v < temp->getValue()){
+			temp = temp->getLeftChild();
+		}	
 		else {
-			node = node->getRightChild();
+			temp = temp->getRightChild();
 		}
 	}
 	return temp;
@@ -66,112 +69,137 @@ Node<T>* BST<T>::findParent(T v, Node<T>* node){
 
 template <typename T>
 void BST<T>::insert(T v) {
-  Node<T>* temp = new Node<T>(v);
-  Node<T>** curr = &root;
-  while (*curr != 0) {
-    if (v < (*curr)->getValue()) {
-      curr = &((*curr)->getLeftChild());
-    } else if (v > (*curr)->getValue()) {
-      curr = &((*curr)->getRightChild());
-    }
-  }
-  *curr = temp;
+	Node<T>* newNode = new Node<T>(v);
+	Node<T>* curr = root;
+	Node<T>* prev = root;
+
+	//insert root
+	if (curr == 0){
+		root = newNode;
+		return;
+	}
+
+	//insert everything else
+	else{
+		while (curr !=0){
+			if (v < curr->getValue()){
+				prev = curr;
+				curr = curr->getLeftChild();
+			}
+			else if (v > curr->getValue()){
+				prev = curr;
+				curr = curr->getRightChild();
+			}
+		}
+
+		//insert node
+		if (prev->getValue() > v){
+			prev->setLeftChild(newNode);
+		}
+		else {
+			prev->setRightChild(newNode);
+		}
+	
+	}
+
 }
 
 template <typename T>
 void BST<T>::remove(T v) {
 	assert(root != 0);
 
-	Node<T>* parent = findParent(v, root);
-	Node<T>* ntbr = findNode(v, root);
-	Node<T>* iop;	
+	Node<T>* curr = root;
 	
 	//handle root
-	Node<T>* tempRoot = root;
-	if(tempRoot->getValue() == v){
+	if(curr->getValue() == v){
 		//case 1 no children
-		if(tempRoot->getLeftChild() == 0 && tempRoot->getRightChild() == 0){
+		if(curr->getLeftChild() == 0 && curr->getRightChild() == 0){
 			root = 0;	
 		}
 		
 		//case 2 one child
-		if(tempRoot->getLeftChild() != 0 && tempRoot->getRightChild() == 0){
-			root = tempRoot->getLeftChild();
+		if(curr->getLeftChild() != 0 && curr->getRightChild() == 0){
+			root = curr->getLeftChild();
 		}
 		else {
-			root = tempRoot->getRightChild();
+			root = curr->getRightChild();
 		}
 
 		//case 3 two children
-		if(tempRoot->getLeftChild() != 0 && tempRoot->getRightChild() != 0){
-			iop = tempRoot->getLeftChild();
+		if(curr->getLeftChild() != 0 && curr->getRightChild() != 0){
+			Node<T>* iop = curr->getLeftChild();
 			while(iop->getRightChild() != 0){
 				iop = iop->getRightChild();
 			}
-			iop->setRightChild(*tempRoot->getRightChild());
-			root = tempRoot->getLeftChild();
+			Node<T>* curr2 = iop;
+			while (curr2->getLeftChild() != 0){
+				curr2 = curr2->getLeftChild();
+			}
+			iop->setRightChild(curr->getRightChild());
+			if (curr->getLeftChild() != iop){
+				curr2->setLeftChild(curr->getLeftChild());
+				curr->getLeftChild()->setRightChild(0);
+			}
+			root = iop;
 		}
 		
-		delete tempRoot;
-		cout << "deleted temproot" << endl;
-		return;
 	}
 
-	
-	cout << "number to be removed is: " << ntbr->getValue() << endl;
-	cout << "parent is: " << parent->getValue() << endl;
-
-  	if(ntbr->getValue() == v){
-
+	else {
+		Node<T>* ntbr = findNode(v, root);
+		Node<T>* parent = findParent(v, root);
 		//case 1 no children
 		if(ntbr->getLeftChild() == 0 && ntbr->getRightChild() == 0){
-			if(parent->getLeftChild() != 0 && parent->getLeftChild()->getValue() == v){
-				parent->setLeftChild(*ntbr->getLeftChild());
+			if(parent->getRightChild() == ntbr){
+				parent->setRightChild(0);
 			}
-			else {
-				parent->setRightChild(*ntbr->getRightChild());
+			else{
+				parent->setLeftChild(0);
 			}
-			delete ntbr;
 		}
 			
 		//case 2 just one child
-		if(ntbr->getLeftChild() != 0 && ntbr->getRightChild() == 0) {
-			if(ntbr->getValue() > parent->getValue()){
-				parent->setRightChild(*ntbr->getLeftChild()); 
+		else if(ntbr->getLeftChild() != 0 && ntbr->getRightChild() == 0) {
+			if(parent->getRightChild() == ntbr){
+				parent->setRightChild(ntbr->getLeftChild()); 
 			}
 			else {
-				parent->setLeftChild(*ntbr->getLeftChild());
+				parent->setLeftChild(ntbr->getLeftChild());
 			}
-			delete ntbr;
 		}
 		
-		if(ntbr->getLeftChild() == 0 && ntbr->getRightChild() != 0){
-			if(ntbr->getValue() > parent->getValue()){
-				parent->setRightChild(*ntbr->getRightChild());
+		else if(ntbr->getLeftChild() == 0 && ntbr->getRightChild() != 0){
+			if(parent->getRightChild() == ntbr){
+				parent->setRightChild(ntbr->getRightChild());
 			}
 			else {
-				parent->setLeftChild(*ntbr->getRightChild());
+				parent->setLeftChild(ntbr->getRightChild());
 			}
-			delete ntbr;
 		}
 
 		//case 3 two children
-		if(ntbr->getLeftChild() != 0 && ntbr->getRightChild() != 0){
-			iop = ntbr->getLeftChild();
+		else {
+			Node<T>* iop = ntbr->getLeftChild();
 			while(iop->getRightChild() != 0){
 				iop = iop->getRightChild();
 			}
-			if(ntbr->getValue() > parent->getValue()){
-				iop->setRightChild(*ntbr->getRightChild());
-				parent->setRightChild(*ntbr->getLeftChild());
+			iop->setRightChild(ntbr->getRightChild());
+			Node<T>* curr2 = iop;
+			while (curr2->getLeftChild() != 0){
+				curr2 = curr2->getLeftChild();
 			}
-			else {
-				iop->setRightChild(*ntbr->getRightChild());
-				parent->setLeftChild(*ntbr->getLeftChild());
+			if (ntbr->getLeftChild() != iop){
+				curr2->setLeftChild(ntbr->getLeftChild());
+				curr->getLeftChild()->setRightChild(0);
 			}
-			delete ntbr;
+			if (parent->getLeftChild() == ntbr){
+				parent->setLeftChild(iop);
+			}
+			else{
+				parent->setRightChild(iop);
+			}
 		}
-	
+		delete ntbr;
 	}
 }
 
