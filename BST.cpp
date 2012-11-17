@@ -82,6 +82,9 @@ void BST<T>::insert(T v) {
 	//insert everything else
 	else{
 		while (curr !=0){
+			if (curr->getValue() == v){
+				return;
+			}
 			if (v < curr->getValue()){
 				prev = curr;
 				curr = curr->getLeftChild();
@@ -155,6 +158,10 @@ void BST<T>::remove(T v) {
 			}
 			else{
 				parent->setLeftChild(0);
+			}
+			if (ntbr == 0){
+				cout << "value: " << v << " note in tree" << endl;
+				return;
 			}
 		}
 			
