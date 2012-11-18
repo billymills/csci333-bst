@@ -212,6 +212,7 @@ void BST<T>::remove(T v) {
 
 template <typename T>
 void BST<T>::levelSearch() {
+	assert(root != 0);
 	bool isEmptyLevel = false;
 	int numLevels=0;
 
